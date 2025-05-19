@@ -252,11 +252,7 @@
   <button class="start-button">Start Drawing</button>
 </div>
 
-<script>
-  function toggleAdvancedOptions() {
-    document.getElementById("advOptions").classList.toggle("open");
-  }
-</script>
+
 
 <style>
   .model-modal {
@@ -334,62 +330,7 @@
   <div class="model-grid" id="modelGrid"></div>
 </div>
 
-<script>
-  const modelList = [
-    {
-      name: "Realistic Vision",
-      thumb: "https://modelfiles.ai-models.org/realistic/realistic-vision-v51-thumb.jpg"
-    },
-    {
-      name: "Deliberate",
-      thumb: "https://modelfiles.ai-models.org/realistic/deliberate-v3-thumb.jpg"
-    },
-    {
-      name: "DreamShaper",
-      thumb: "https://modelfiles.ai-models.org/realistic/dreamshaper-v8-thumb.jpg"
-    }
-  ];
 
-  function openModelModal() {
-    document.getElementById("modelModal").classList.add("active");
-    const grid = document.getElementById("modelGrid");
-    grid.innerHTML = "";
-
-    modelList.forEach(model => {
-      const card = document.createElement("div");
-      card.className = "model-card";
-      card.innerHTML = `
-        <img src="${model.thumb}" alt="${model.name}" />
-        <div class="model-label">${model.name}</div>
-      `;
-      card.onclick = () => {
-        document.getElementById("modelName").innerText = model.name;
-        document.getElementById("modelThumb").src = model.thumb;
-        localStorage.setItem("selectedModel", model.name);
-        localStorage.setItem("selectedImage", model.thumb);
-        closeModelModal();
-      };
-      grid.appendChild(card);
-    });
-
-    highlightSelectedCard();
-  }
-
-  function closeModelModal() {
-    document.getElementById("modelModal").classList.remove("active");
-  }
-
-  function highlightSelectedCard() {
-    const cards = document.querySelectorAll(".model-card");
-    const selectedName = document.getElementById("modelName").innerText;
-    cards.forEach(card => {
-      const label = card.querySelector(".model-label").innerText;
-      card.classList.toggle("selected", label === selectedName);
-    });
-  }
-
-  document.getElementById("selectedModelBox").addEventListener("click", openModelModal);
-</script>
 
 <style>
   .start-button:hover {
@@ -405,67 +346,91 @@
   }
 </style>
 
+
+
+
+
+
 <script>
   async function startDrawing() {
-    const model = document.querySelector("input[placeholder='Realistic Vision']").value || "Realistic Vision";
     const prompt = document.querySelector("textarea[placeholder='What do you dream of?']").value;
     const negative_prompt = document.querySelector("textarea[placeholder='What do you want to exclude?']").value;
     const steps = parseInt(document.querySelector("input[type='number'][value='40']")?.value || "40");
     const sampler = document.querySelector("input[value='Euler A']")?.value || "Euler A";
     const cfg = parseFloat(document.querySelector("input[value='5.0']")?.value || "5.0");
     const seed = document.querySelector("input[placeholder='Random']")?.value || null;
+    const clip_skip = parseInt(document.querySelector("input[value='1']")?.value || "1");
+    const vae = document.querySelector("input[value='blessed']")?.value || "blessed";
+    const quality_boost = document.querySelector("input[type='checkbox']:nth-of-type(1)")?.checked || false;
+    const high_res = document.querySelector("input[type='checkbox']:nth-of-type(1)")?.checked || false;
+    const restore_faces = document.querySelector("input[type='checkbox']:nth-of-type(2)")?.checked || false;
+    const control_layer = document.querySelector("input[placeholder='+']")?.value || "";
 
-    const body = {
-      model,
-      prompt,
-      negative_prompt,
-      steps,
-      sampler,
-      cfg,
-      seed
+    const model = document.getElementById("modelName")?.innerText || "Realistic Vision";
+
+    const fileInput = document.querySelector("input[type='file']");
+    let image = null;
+
+    const sendPayload = async (imgBase64 = null) => {
+      const body = {
+        model,
+        prompt,
+        negative_prompt,
+        steps,
+        sampler,
+        cfg,
+        seed,
+        clip_skip,
+        vae,
+        quality_boost,
+        high_res,
+        restore_faces,
+        control_layer,
+        image: imgBase64
+      };
+
+      const btn = document.querySelector(".start-button");
+      btn.disabled = true;
+      btn.innerText = "Generating...";
+
+      try {
+        const res = await fetch("/api/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+
+        const data = await res.json();
+        if (data && data.image_url) {
+          window.location.href = '/viewer.html?url=' + encodeURIComponent(data.image_url);
+        } else {
+          alert("No image returned.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error generating image.");
+      }
+
+      btn.disabled = false;
+      btn.innerText = "Start Drawing";
     };
 
-    const btn = document.querySelector(".start-button");
-    btn.disabled = true;
-    btn.innerText = "Generating...";
-
-    try {
-      const res = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      });
-
-      const data = await res.json();
-      if (data && data.image_url) {
-        window.location.href = '/viewer.html?url=' + encodeURIComponent(data.image_url);
-      } else {
-        alert("No image returned.");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Error generating image.");
+    if (fileInput && fileInput.files.length > 0) {
+      const reader = new FileReader();
+      reader.onloadend = function () {
+        const base64 = reader.result.split(',')[1];
+        sendPayload(base64);
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    } else {
+      sendPayload(null);
     }
-
-    btn.disabled = false;
-    btn.innerText = "Start Drawing";
   }
 
   document.addEventListener("DOMContentLoaded", () => {
     const btn = document.querySelector(".start-button");
     if (btn) btn.addEventListener("click", startDrawing);
   });
-</script>
-
-<script>
-  function selectModelTab(tabId) {
-    document.querySelectorAll(".model-section").forEach(s => s.classList.remove("active"));
-    document.querySelectorAll(".model-select-bar button").forEach(b => b.classList.remove("selected"));
-    const section = document.getElementById(tabId);
-    const button = [...document.querySelectorAll(".model-select-bar button")].find(b => b.textContent.replace(/\s+/g, '').toLowerCase() === tabId);
-    if (section) section.classList.add("active");
-    if (button) button.classList.add("selected");
-  }
 </script>
 
 </body></html>
