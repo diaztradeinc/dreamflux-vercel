@@ -334,4 +334,71 @@
   });
 </script>
 
+
+<style>
+  .start-button:hover {
+    background: #ffe100;
+    transform: scale(1.03);
+    box-shadow: 0 6px 16px rgba(255,255,0,0.4);
+  }
+
+  .start-button:active {
+    transform: scale(0.97);
+    background: #f2d200;
+    box-shadow: 0 2px 6px rgba(255,255,0,0.2);
+  }
+</style>
+
+<script>
+  async function startDrawing() {
+    const model = document.querySelector("input[placeholder='Realistic Vision']").value || "Realistic Vision";
+    const prompt = document.querySelector("textarea[placeholder='What do you dream of?']").value;
+    const negative_prompt = document.querySelector("textarea[placeholder='What do you want to exclude?']").value;
+    const steps = parseInt(document.querySelector("input[type='number'][value='40']")?.value || "40");
+    const sampler = document.querySelector("input[value='Euler A']")?.value || "Euler A";
+    const cfg = parseFloat(document.querySelector("input[value='5.0']")?.value || "5.0");
+    const seed = document.querySelector("input[placeholder='Random']")?.value || null;
+
+    const body = {
+      model,
+      prompt,
+      negative_prompt,
+      steps,
+      sampler,
+      cfg,
+      seed
+    };
+
+    const btn = document.querySelector(".start-button");
+    btn.disabled = true;
+    btn.innerText = "Generating...";
+
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+
+      const data = await res.json();
+      if (data && data.image_url) {
+        window.location.href = '/viewer.html?url=' + encodeURIComponent(data.image_url);
+      } else {
+        alert("No image returned.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error generating image.");
+    }
+
+    btn.disabled = false;
+    btn.innerText = "Start Drawing";
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.querySelector(".start-button");
+    if (btn) btn.addEventListener("click", startDrawing);
+  });
+</script>
+
 </body></html>
