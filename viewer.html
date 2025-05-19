@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generated Image - DreamFlux</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: white;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      position: relative;
+    }
+    #loader {
+      width: 80px;
+      height: 80px;
+      border: 10px solid rgba(0, 255, 255, 0.2);
+      border-top-color: #0ff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    #image-viewer {
+      display: none;
+      position: relative;
+      text-align: center;
+    }
+    #image-viewer img {
+      max-width: 100vw;
+      max-height: 100vh;
+      border-radius: 8px;
+    }
+    .icon-btn {
+      position: absolute;
+      top: 16px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 8px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    #closeBtn {
+      left: 16px;
+    }
+    #downloadBtn {
+      right: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div id="loader"></div>
+
+  <div id="image-viewer">
+    <div class="icon-btn" id="closeBtn" onclick="window.history.back()">❌</div>
+    <div class="icon-btn" id="downloadBtn">⬇️</div>
+    <img id="resultImage" src="" alt="Generated" />
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const url = params.get("url");
+    if (url) {
+      const img = document.getElementById("resultImage");
+      const viewer = document.getElementById("image-viewer");
+      const loader = document.getElementById("loader");
+
+      img.onload = () => {
+        loader.style.display = "none";
+        viewer.style.display = "block";
+      };
+
+      img.src = decodeURIComponent(url);
+      document.getElementById("downloadBtn").onclick = () => {
+        const a = document.createElement("a");
+        a.href = img.src;
+        a.download = "dreamflux-image.png";
+        a.click();
+      };
+    }
+  </script>
+</body>
+</html>

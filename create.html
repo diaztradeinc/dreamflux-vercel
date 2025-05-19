@@ -271,4 +271,67 @@
   }
 </script>
 
+
+<script>
+  async function startDrawing() {
+    const model = document.querySelector("input[placeholder='Realistic Vision']").value || "Realistic Vision";
+    const prompt = document.querySelector("textarea[placeholder='What do you dream of?']").value;
+    const negative_prompt = document.querySelector("textarea[placeholder='What do you want to exclude?']").value;
+    const steps = parseInt(document.querySelector("input[type='number'][value='40']")?.value || "40");
+    const sampler = document.querySelector("input[value='Euler A']")?.value || "Euler A";
+    const cfg = parseFloat(document.querySelector("input[value='5.0']")?.value || "5.0");
+    const seed = document.querySelector("input[placeholder='Random']")?.value || null;
+
+    const body = {
+      model,
+      prompt,
+      negative_prompt,
+      steps,
+      sampler,
+      cfg,
+      seed
+    };
+
+    const btn = document.querySelector(".start-button");
+    btn.disabled = true;
+    btn.innerText = "Generating...";
+
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+      });
+
+      const data = await res.json();
+      console.log("Generation result:", data);
+
+      
+      if (data && data.image_url) {
+        window.location.href = '/viewer.html?url=' + encodeURIComponent(data.image_url);
+      } else {
+        alert("No image received. Check inputs or model availability.");
+      }
+ else {
+        alert("No image received. Check inputs or model availability.");
+      }
+    } catch (err) {
+      console.error("API error:", err);
+      alert("Error generating image.");
+    }
+
+    btn.disabled = false;
+    btn.innerText = "Start Drawing";
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const drawBtn = document.querySelector(".start-button");
+    if (drawBtn) {
+      drawBtn.addEventListener("click", startDrawing);
+    }
+  });
+</script>
+
 </body></html>
