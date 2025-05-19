@@ -1,0 +1,807 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Settings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+<style>
+  .card, .button, .input {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+    margin: 8px 0;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  [data-theme="light"] .card,
+  [data-theme="light"] .button,
+  [data-theme="light"] .input {
+    background: rgba(0, 0, 0, 0.05);
+    color: #111;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .button:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  [data-theme="light"] .button:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+</style>
+
+
+<style>
+  .bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    background: #111;
+    height: 60px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+
+  #nav-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* Desktop: switch to top nav bar */
+  @media (min-width: 768px) {
+    .bottom-nav {
+      top: 0;
+      bottom: auto;
+      height: 70px;
+      justify-content: space-between;
+      padding: 0 40px;
+    }
+
+    .bottom-nav a {
+      font-size: 1.2em;
+      padding: 10px 16px;
+    }
+
+    #nav-user {
+      position: relative;
+      right: 0;
+      top: 0;
+      transform: none;
+      margin-left: auto;
+    }
+  }
+</style>
+
+</head>
+<body>
+  <div class="card" style="max-width: 600px; margin: 60px auto;">
+    <h2>Settings</h2>
+    <label class="input">Theme:
+      <select id="theme-select" class="input" style="width: 100%; margin-top: 5px;">
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+      </select>
+    </label>
+    <label class="input">Default Model Category:
+      <select id="category-select" class="input" style="width: 100%; margin-top: 5px;">
+        <option value="Photorealistic">Photorealistic</option>
+        <option value="Anime">Anime</option>
+        <option value="Artistic">Artistic</option>
+      </select>
+    </label>
+    <div class="input">
+      <label><input type="checkbox" id="nsfw-toggle" /> Show NSFW Models</label><br>
+      <label><input type="checkbox" id="animation-toggle" /> Enable Page Animations</label>
+    </div>
+    <button class="button" style="width:100%; margin-top:12px;" onclick="saveSettings()">Save Preferences</button>
+    <p id="status-msg" style="font-size: 0.9rem; opacity: 0.7; margin-top: 6px;"></p>
+  </div>
+
+  <script>
+    function saveSettings() {
+      const theme = document.getElementById("theme-select").value;
+      const category = document.getElementById("category-select").value;
+      const nsfw = document.getElementById("nsfw-toggle").checked;
+      const animate = document.getElementById("animation-toggle").checked;
+
+      localStorage.setItem("theme", theme);
+      localStorage.setItem("defaultCategory", category);
+      localStorage.setItem("showNSFW", nsfw);
+      localStorage.setItem("enableAnimations", animate);
+
+      document.documentElement.setAttribute("data-theme", theme);
+      document.getElementById("status-msg").innerText = "Preferences saved!";
+    }
+
+    // Apply stored settings
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("theme-select").value = localStorage.getItem("theme") || "dark";
+      document.getElementById("category-select").value = localStorage.getItem("defaultCategory") || "Photorealistic";
+      document.getElementById("nsfw-toggle").checked = localStorage.getItem("showNSFW") === "true";
+      document.getElementById("animation-toggle").checked = localStorage.getItem("enableAnimations") === "true";
+    });
+  </script>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest">
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+
+  @keyframes bounce {
+    from { transform: translate(-50%, -50%) scale(1); }
+    to { transform: translate(-50%, -52%) scale(1.05); }
+  }
+
+  @keyframes fadeInLogo {
+    from { opacity: 0; }
+    to { opacity: 0.1; }
+  }
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Settings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+<style>
+  .card, .button, .input {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+    margin: 8px 0;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  [data-theme="light"] .card,
+  [data-theme="light"] .button,
+  [data-theme="light"] .input {
+    background: rgba(0, 0, 0, 0.05);
+    color: #111;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .button:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  [data-theme="light"] .button:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+</style>
+
+
+<style>
+  .bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    background: #111;
+    height: 60px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+
+  #nav-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* Desktop: switch to top nav bar */
+  @media (min-width: 768px) {
+    .bottom-nav {
+      top: 0;
+      bottom: auto;
+      height: 70px;
+      justify-content: space-between;
+      padding: 0 40px;
+    }
+
+    .bottom-nav a {
+      font-size: 1.2em;
+      padding: 10px 16px;
+    }
+
+    #nav-user {
+      position: relative;
+      right: 0;
+      top: 0;
+      transform: none;
+      margin-left: auto;
+    }
+  }
+</style>
+
+</head>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest">
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+
+  @keyframes bounce {
+    from { transform: translate(-50%, -50%) scale(1); }
+    to { transform: translate(-50%, -52%) scale(1.05); }
+  }
+
+  @keyframes fadeInLogo {
+    from { opacity: 0; }
+    to { opacity: 0.1; }
+  }
+</style>
+<nav class="bottom-nav">
+  <a href="/" id="nav-home" title="Home"><i data-lucide="home"></i></a>
+  <a href="/create" id="nav-create" title="Create"><i data-lucide="wand-2"></i></a>
+  <a href="/profile" id="nav-profile" title="Profile"><i data-lucide="image"></i></a>
+  <a href="/settings" id="nav-settings" title="Settings"><i data-lucide="settings"></i></a>
+
+  <div id="nav-user" style="position:absolute; right:16px; top:-4px; display:flex; align-items:center; gap:8px;">
+    <span id="nav-username" style="font-size:0.9rem; opacity:0.8;"></span>
+    <img id="nav-avatar" src="assets/images/profile.jpg" alt="Avatar" style="width:30px;height:30px;border-radius:50%;object-fit:cover;" />
+  </div>
+
+  <div id="nav-user" style="position:absolute; right:16px; top:-4px; display:flex; align-items:center; gap:8px; cursor:pointer;">
+    <span id="nav-username" style="font-size:0.9rem; opacity:0.8;"></span>
+    <img id="nav-avatar" src="assets/images/profile.jpg" alt="Avatar" style="width:30px;height:30px;border-radius:50%;object-fit:cover;" />
+    <div id="user-dropdown" style="display:none; position:absolute; bottom:50px; right:0; background:#222; border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,0.5); padding:8px; font-size:0.85rem; z-index:1000;">
+      <a href="/profile" style="display:block; padding:6px 12px; color:white; text-decoration:none;">👤 Profile</a>
+      <a href="/settings" style="display:block; padding:6px 12px; color:white; text-decoration:none;">⚙️ Settings</a>
+      <a href="#" onclick="logoutUser()" style="display:block; padding:6px 12px; color:#f55; text-decoration:none;">🚪 Log Out</a>
+    </div>
+  </div>
+</nav>
+<script>
+  const uname = localStorage.getItem("username");
+  const avatar = localStorage.getItem("avatar");
+  if (uname) document.getElementById("nav-username").textContent = uname;
+  if (avatar) document.getElementById("nav-avatar").src = avatar;
+
+  // Toggle dropdown
+  const userSection = document.getElementById("nav-user");
+  const dropdown = document.getElementById("user-dropdown");
+  userSection.addEventListener("click", () => {
+    
+    const isOpen = dropdown.style.display === "block";
+    dropdown.style.display = isOpen ? "none" : "block";
+    dropdown.style.opacity = isOpen ? "0" : "1";
+
+  });
+
+  // Log out clears profile data
+  function logoutUser() {
+    localStorage.removeItem("username");
+    localStorage.removeItem("avatar");
+    
+    
+    const goodbyeMsg = document.createElement('div');
+    goodbyeMsg.textContent = "Come back soon!";
+    goodbyeMsg.style.position = "fixed";
+    goodbyeMsg.style.top = "50%";
+    goodbyeMsg.style.left = "50%";
+    goodbyeMsg.style.transform = "translate(-50%, -50%)";
+    goodbyeMsg.style.fontSize = "1.5rem";
+    goodbyeMsg.style.fontFamily = "sans-serif";
+    
+    goodbyeMsg.style.color = "#0ff";
+    goodbyeMsg.style.textShadow = "0 0 10px #0ff, 0 0 20px #00f, 0 0 30px #00f";
+    goodbyeMsg.style.animation = "bounce 1s ease-in-out infinite alternate";
+
+    goodbyeMsg.style.zIndex = "9999";
+    
+    const splashImg = document.createElement('img');
+    splashImg.src = "assets/images/DreamFluxHeader.png";
+    splashImg.alt = "DreamFlux Logo";
+    splashImg.style.position = "fixed";
+    splashImg.style.top = "50%";
+    splashImg.style.left = "50%";
+    splashImg.style.transform = "translate(-50%, -50%)";
+    splashImg.style.width = "160px";
+    splashImg.style.opacity = "0.1";
+    splashImg.style.zIndex = "9998";
+    splashImg.style.animation = "fadeInLogo 1s ease forwards";
+
+    document.body.appendChild(splashImg);
+    document.body.appendChild(goodbyeMsg);
+
+    document.body.style.transition = "opacity 0.6s ease-out";
+
+    document.body.style.opacity = "0";
+    setTimeout(() => {
+      window.location.href = "/index.html";
+    }, 600);
+
+  }
+
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+<script>
+  window.addEventListener("DOMContentLoaded", function() {
+    
+    lucide.createIcons();
+
+    // Show saved user avatar and name
+    const uname = localStorage.getItem("username");
+    const avatar = localStorage.getItem("avatar");
+    if (uname) document.getElementById("nav-username").textContent = uname;
+    if (avatar) document.getElementById("nav-avatar").src = avatar;
+
+    const path = window.location.pathname;
+    if (path.includes("create")) document.getElementById("nav-create").classList.add("active");
+    else if (path.includes("profile")) document.getElementById("nav-profile").classList.add("active");
+    else if (path.includes("settings")) document.getElementById("nav-settings").classList.add("active");
+    else document.getElementById("nav-home").classList.add("active");
+  });
+
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+
+
+<style>
+  #hamburger {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    background: none;
+    border: none;
+    z-index: 1001;
+    font-size: 1.8rem;
+    color: var(--text-color);
+    cursor: pointer;
+  }
+
+  .side-nav {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: -240px;
+    width: 240px;
+    height: 100%;
+    background: #111;
+    padding: 60px 20px 20px;
+    z-index: 1000;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.4);
+    transition: left 0.3s ease;
+  }
+
+  .side-nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 0;
+    font-size: 1.1rem;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+  }
+
+  .side-nav a:hover {
+    opacity: 1;
+  }
+
+  .side-nav-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    opacity: 0.7;
+  }
+
+  .side-nav-footer img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  @media (min-width: 768px) {
+    #hamburger {
+      display: block;
+    }
+  }
+
+  .side-nav.open {
+    left: 0;
+  }
+</style>
+
+
+<style>
+  #hamburger {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    background: none;
+    border: none;
+    z-index: 1001;
+    font-size: 1.8rem;
+    color: var(--text-color);
+    cursor: pointer;
+  }
+
+  .side-nav {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: -240px;
+    width: 240px;
+    height: 100%;
+    background: #111;
+    padding: 60px 20px 20px;
+    z-index: 1000;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.4);
+    transition: left 0.3s ease;
+  }
+
+  .side-nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 0;
+    font-size: 1.1rem;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+  }
+
+  .side-nav a:hover {
+    opacity: 1;
+  }
+
+  .side-nav-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    opacity: 0.7;
+  }
+
+  .side-nav-footer img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  @media (min-width: 768px) {
+    #hamburger {
+      display: block;
+    }
+  }
+
+  .side-nav.open {
+    left: 0;
+  }
+
+  .side-nav a {
+    transform: translateX(-20px);
+    opacity: 0;
+    animation: slideIn 0.4s ease forwards;
+  }
+
+  .side-nav.open a:nth-child(1) { animation-delay: 0.1s; }
+  .side-nav.open a:nth-child(2) { animation-delay: 0.2s; }
+  .side-nav.open a:nth-child(3) { animation-delay: 0.3s; }
+  .side-nav.open a:nth-child(4) { animation-delay: 0.4s; }
+
+  @keyframes slideIn {
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+</style>
+
+
+<style>
+  #hamburger {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    background: none;
+    border: none;
+    z-index: 1001;
+    font-size: 1.8rem;
+    color: var(--text-color);
+    cursor: pointer;
+  }
+
+  .side-nav {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: -240px;
+    width: 240px;
+    height: 100%;
+    background: #111;
+    padding: 60px 20px 20px;
+    z-index: 1000;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.4);
+    transition: left 0.3s ease;
+  }
+
+  .side-nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 0;
+    font-size: 1.1rem;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+  }
+
+  .side-nav a:hover {
+    opacity: 1;
+  }
+
+  .side-nav-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    opacity: 0.7;
+  }
+
+  .side-nav-footer img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  @media (min-width: 768px) {
+    #hamburger {
+      display: block;
+    }
+  }
+
+  .side-nav.open {
+    left: 0;
+  }
+
+  .side-nav a {
+    transform: translateX(-20px);
+    opacity: 0;
+    animation: slideIn 0.4s ease forwards;
+  }
+
+  .side-nav.open a:nth-child(1) { animation-delay: 0.1s; }
+  .side-nav.open a:nth-child(2) { animation-delay: 0.2s; }
+  .side-nav.open a:nth-child(3) { animation-delay: 0.3s; }
+  .side-nav.open a:nth-child(4) { animation-delay: 0.4s; }
+
+  @keyframes slideIn {
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .hamburger-icon {
+    width: 30px;
+    height: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    z-index: 1001;
+  }
+
+  .hamburger-icon span {
+    height: 3px;
+    width: 100%;
+    background: var(--text-color);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+  }
+
+  .hamburger-icon.open span:nth-child(1) {
+    transform: rotate(45deg) translateY(9px);
+  }
+  .hamburger-icon.open span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger-icon.open span:nth-child(3) {
+    transform: rotate(-45deg) translateY(-9px);
+  }
+</style>
+
+
+<button id="hamburger" class="hamburger-icon" aria-label="Toggle menu">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<nav class="side-nav" id="side-nav">
+  <a href="/">Home</a>
+  <a href="/create">Create</a>
+  <a href="/profile">Profile</a>
+  <a href="/settings">Settings</a>
+  <div class="side-nav-footer">
+    <img id="side-avatar" src="assets/images/profile.jpg" />
+    <span id="side-username"></span>
+  </div>
+</nav>
+
+<script>
+  
+  const hamburger = document.getElementById("hamburger");
+  hamburger.addEventListener("click", () => {
+    document.getElementById("side-nav").classList.toggle("open");
+    hamburger.classList.toggle("open");
+
+    document.getElementById("side-nav").classList.toggle("open");
+  });
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const uname = localStorage.getItem("username");
+    const avatar = localStorage.getItem("avatar");
+    if (uname) document.getElementById("side-username").textContent = uname;
+    if (avatar) document.getElementById("side-avatar").src = avatar;
+  });
+</script>
+</body>

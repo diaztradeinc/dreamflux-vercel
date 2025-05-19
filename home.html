@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DreamFlux Home</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0d0d0d;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      opacity: 0;
+      animation: fadeIn 1.5s ease-in forwards;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+
+    .start-button {
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      border: none;
+      padding: 15px 30px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      box-shadow: 0 4px 15px rgba(0, 114, 255, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: pulse 2s infinite;
+      text-decoration: none;
+    }
+
+    .start-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 25px rgba(0, 114, 255, 0.6);
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to DreamFlux</h1>
+  <a class="start-button" href="/create">Start Creating</a>
+</body>
+</html>

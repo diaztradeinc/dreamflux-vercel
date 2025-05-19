@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DreamFlux - Create</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>DreamFlux Image Generator</h1>
+
+    <div style="margin-bottom: 1em;">
+      <label for="prompt">Prompt:</label>
+      <input id="prompt" type="text" placeholder="Describe your image..." style="width:100%;padding:10px;margin-top:5px;" />
+    </div>
+
+    <div style="margin-bottom: 1em;">
+      <label for="negative-prompt">Negative Prompt:</label>
+      <input id="negative-prompt" type="text" placeholder="Optional exclusions..." style="width:100%;padding:10px;margin-top:5px;" />
+    </div>
+
+    <div style="margin-bottom: 1em;">
+      <input id="model-search" type="text" placeholder="Search models..." style="width:100%;padding:10px;" />
+    </div>
+
+    <!-- Categorized Model Carousel -->
+    <div id="model-carousel"></div>
+
+    <!-- DRAW BUTTON -->
+    <div style="margin-top: 2em;">
+      <button id="generate-button">Start Drawing</button>
+    </div>
+
+    <!-- Preview -->
+    <div id="image-preview" style="margin-top: 1.5em;"></div>
+  </div>
+
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

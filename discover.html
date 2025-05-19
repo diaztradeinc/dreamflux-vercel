@@ -1,0 +1,422 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Discover</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+<style>
+  .card, .button, .input {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+    margin: 8px 0;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  [data-theme="light"] .card,
+  [data-theme="light"] .button,
+  [data-theme="light"] .input {
+    background: rgba(0, 0, 0, 0.05);
+    color: #111;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .button:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  [data-theme="light"] .button:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+</style>
+
+
+<style>
+  .model-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 16px;
+    color: var(--text-color);
+    font-family: sans-serif;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+  }
+
+  .model-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 6px 18px rgba(0,255,255,0.15);
+  }
+
+  [data-theme="light"] .model-card {
+    background: rgba(0,0,0,0.03);
+    border-color: rgba(0,0,0,0.05);
+  }
+</style>
+
+
+<style>
+  .model-card .card-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+  }
+
+  .model-card button {
+    background: transparent;
+    border: 1px solid #0ff;
+    color: #0ff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .model-card button:hover {
+    background: #0ff;
+    color: black;
+  }
+
+  [data-theme="light"] .model-card button {
+    border-color: #0072ff;
+    color: #0072ff;
+  }
+
+  [data-theme="light"] .model-card button:hover {
+    background: #0072ff;
+    color: white;
+  }
+</style>
+
+</head>
+<body>
+  <div id="discover-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:40px;">
+    <!-- Discover model cards will be inserted here -->
+    <div class="model-card card" data-category="Anime" data-nsfw="false">Anime Model 1
+  <div class="card-actions">
+    <button onclick="useModel(this.closest('.model-card').innerText)">Use</button>
+    <button class="favorite-btn" onclick="favoriteModel(this.closest('.model-card').innerText, this)">♡</button>
+    <button onclick="shareModel(this.closest('.model-card').innerText)">Share</button>
+  </div>
+</div>
+
+    <div class="model-card card" data-category="Artistic" data-nsfw="true">Artistic NSFW Model
+  <div class="card-actions">
+    <button onclick="useModel(this.closest('.model-card').innerText)">Use</button>
+    <button class="favorite-btn" onclick="favoriteModel(this.closest('.model-card').innerText, this)">♡</button>
+    <button onclick="shareModel(this.closest('.model-card').innerText)">Share</button>
+  </div>
+</div>
+
+    <div class="model-card card" data-category="Photorealistic" data-nsfw="false">Realistic Model
+  <div class="card-actions">
+    <button onclick="useModel(this.closest('.model-card').innerText)">Use</button>
+    <button class="favorite-btn" onclick="favoriteModel(this.closest('.model-card').innerText, this)">♡</button>
+    <button onclick="shareModel(this.closest('.model-card').innerText)">Share</button>
+  </div>
+</div>
+
+  
+  <div class="card-actions">
+    <button onclick="useModel(this.closest('.model-card').innerText)">Use</button>
+    <button class="favorite-btn" onclick="favoriteModel(this.closest('.model-card').innerText, this)">♡</button>
+    <button onclick="shareModel(this.closest('.model-card').innerText)">Share</button>
+  </div>
+</div>
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const defaultCategory = localStorage.getItem("defaultCategory");
+      const enableAnimations = localStorage.getItem("enableAnimations") === "true";
+      const showNSFW = localStorage.getItem("showNSFW") === "true";
+
+      if (!enableAnimations) {
+        document.body.classList.add("no-animations");
+      }
+
+      const cards = document.querySelectorAll(".model-card");
+      cards.forEach(card => {
+        const cat = card.dataset.category;
+        const nsfw = card.dataset.nsfw === "true";
+        if (defaultCategory && cat !== defaultCategory) {
+          card.style.display = "none";
+        }
+        if (!showNSFW && nsfw) {
+          card.style.display = "none";
+        }
+      });
+    });
+  </script>
+
+  <style>
+    .no-animations * {
+      transition: none !important;
+      animation: none !important;
+    }
+  </style>
+
+<script>
+  function useModel(name) {
+    alert("Using model: " + name);
+  }
+  function favoriteModel(name) {
+    alert("Favorited model: " + name);
+  }
+  function shareModel(name) {
+    alert("Shared model: " + name);
+  }
+</script>
+
+
+<script>
+  function useModel(name) {
+    alert("Using model: " + name);
+  }
+  function shareModel(name) {
+    alert("Shared model: " + name);
+  }
+  function favoriteModel(name, el) {
+    const saved = JSON.parse(localStorage.getItem("favorites") || "[]");
+    const index = saved.indexOf(name);
+    if (index >= 0) {
+      saved.splice(index, 1);
+      el.textContent = "♡";
+    } else {
+      saved.push(name);
+      el.textContent = "♥";
+    }
+    localStorage.setItem("favorites", JSON.stringify(saved));
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll(".model-card");
+    const saved = JSON.parse(localStorage.getItem("favorites") || "[]");
+    cards.forEach(card => {
+      const modelName = card.textContent.trim();
+      const favBtn = card.querySelector(".favorite-btn");
+      if (favBtn && saved.includes(modelName)) {
+        favBtn.textContent = "♥";
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
+<nav class="bottom-nav">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Discover</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+<style>
+  .card, .button, .input {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+    margin: 8px 0;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  [data-theme="light"] .card,
+  [data-theme="light"] .button,
+  [data-theme="light"] .input {
+    background: rgba(0, 0, 0, 0.05);
+    color: #111;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .button:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  [data-theme="light"] .button:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+</style>
+
+
+<style>
+  .model-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 16px;
+    color: var(--text-color);
+    font-family: sans-serif;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+  }
+
+  .model-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 6px 18px rgba(0,255,255,0.15);
+  }
+
+  [data-theme="light"] .model-card {
+    background: rgba(0,0,0,0.03);
+    border-color: rgba(0,0,0,0.05);
+  }
+</style>
+
+
+<style>
+  .model-card .card-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+  }
+
+  .model-card button {
+    background: transparent;
+    border: 1px solid #0ff;
+    color: #0ff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .model-card button:hover {
+    background: #0ff;
+    color: black;
+  }
+
+  [data-theme="light"] .model-card button {
+    border-color: #0072ff;
+    color: #0072ff;
+  }
+
+  [data-theme="light"] .model-card button:hover {
+    background: #0072ff;
+    color: white;
+  }
+</style>
+
+</head>
+<body>
+  <div id="discover-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:40px;">
+    <!-- Discover model cards will be inserted here -->
+    <div class="model-card card" data-category="Anime" data-nsfw="false">Anime Model 1
+  <div class="card-actions">
+    <button onclick="useModel(this.closest('.model-card').innerText)">Use</button>
+    <button class="favorite-btn" onclick="favoriteModel(this.closest('.model-card').innerText, this)">♡</button>
+    <button onclick="shareModel(this.closest('.model-card').innerText)">Share</button>
+  </div>
+</div>
+
+    <div class="model-card card" data-category="Artistic" data-nsfw="true">Artistic NSFW Model
+  <div class="card-actions">
+    <button onclick="useModel(this.closest('.model-card').innerText)">Use</button>
+    <button class="favorite-btn" onclick="favoriteModel(this.closest('.model-card').innerText, this)">♡</button>
+    <button onclick="shareModel(this.closest('.model-card').innerText)">Share</button>
+  </div>
+</div>
+
+    <div class="model-card card" data-category="Photorealistic" data-nsfw="false">Realistic Model
+  <div class="card-actions">
+    <button onclick="useModel(this.closest('.model-card').innerText)">Use</button>
+    <button class="favorite-btn" onclick="favoriteModel(this.closest('.model-card').innerText, this)">♡</button>
+    <button onclick="shareModel(this.closest('.model-card').innerText)">Share</button>
+  </div>
+</div>
+
+  
+  <div class="card-actions">
+    <button onclick="useModel(this.closest('.model-card').innerText)">Use</button>
+    <button class="favorite-btn" onclick="favoriteModel(this.closest('.model-card').innerText, this)">♡</button>
+    <button onclick="shareModel(this.closest('.model-card').innerText)">Share</button>
+  </div>
+</div>
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const defaultCategory = localStorage.getItem("defaultCategory");
+      const enableAnimations = localStorage.getItem("enableAnimations") === "true";
+      const showNSFW = localStorage.getItem("showNSFW") === "true";
+
+      if (!enableAnimations) {
+        document.body.classList.add("no-animations");
+      }
+
+      const cards = document.querySelectorAll(".model-card");
+      cards.forEach(card => {
+        const cat = card.dataset.category;
+        const nsfw = card.dataset.nsfw === "true";
+        if (defaultCategory && cat !== defaultCategory) {
+          card.style.display = "none";
+        }
+        if (!showNSFW && nsfw) {
+          card.style.display = "none";
+        }
+      });
+    });
+  </script>
+
+  <style>
+    .no-animations * {
+      transition: none !important;
+      animation: none !important;
+    }
+  </style>
+
+<script>
+  function useModel(name) {
+    alert("Using model: " + name);
+  }
+  function favoriteModel(name) {
+    alert("Favorited model: " + name);
+  }
+  function shareModel(name) {
+    alert("Shared model: " + name);
+  }
+</script>
+
+
+<script>
+  function useModel(name) {
+    alert("Using model: " + name);
+  }
+  function shareModel(name) {
+    alert("Shared model: " + name);
+  }
+  function favoriteModel(name, el) {
+    const saved = JSON.parse(localStorage.getItem("favorites") || "[]");
+    const index = saved.indexOf(name);
+    if (index >= 0) {
+      saved.splice(index, 1);
+      el.textContent = "♡";
+    } else {
+      saved.push(name);
+      el.textContent = "♥";
+    }
+    localStorage.setItem("favorites", JSON.stringify(saved));
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll(".model-card");
+    const saved = JSON.parse(localStorage.getItem("favorites") || "[]");
+    cards.forEach(card => {
+      const modelName = card.textContent.trim();
+      const favBtn = card.querySelector(".favorite-btn");
+      if (favBtn && saved.includes(modelName)) {
+        favBtn.textContent = "♥";
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

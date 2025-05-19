@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Settings - DreamFlux</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <header class="top-bar">Settings</header>
+  <main style="padding: 20px;">
+    <div class="card">
+      <h3><i data-lucide="wand-2" class="icon"></i> Generation Settings</h3>
+      <label>
+        <input type="checkbox" checked /> Restore Faces
+      </label><br/>
+      <label>
+        <input type="checkbox" checked /> High-Res Mode
+      </label>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+      <h3><i data-lucide="moon" class="icon"></i> Appearance</h3>
+      <label>
+        <input type="checkbox" /> Enable HUD Theme
+      </label><br/>
+      <label>
+        <input type="checkbox" /> Show Tooltips
+      </label>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+      <h3><i data-lucide="trash-2" class="icon"></i> Data</h3>
+      <button class="btn-primary">Reset App</button>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="../index.html"><i data-lucide="home" class="icon"></i>Home</a>
+    <a href="create.html"><i data-lucide="sparkles" class="icon"></i>Create</a>
+    <a href="settings.html"><i data-lucide="settings" class="icon"></i>Settings</a>
+    <a href="profile.html"><i data-lucide="user" class="icon"></i>Profile</a>
+  </nav>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>

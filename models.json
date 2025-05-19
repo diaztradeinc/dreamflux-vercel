@@ -1,0 +1,79 @@
+[
+  {
+    "id": "sdxl",
+    "name": "SDXL",
+    "image": "assets/images/sdxl.jpg",
+    "category": "Photorealistic",
+    "tags": [
+      "stable diffusion",
+      "real",
+      "high-res"
+    ]
+  },
+  {
+    "id": "sd15",
+    "name": "Stable Diffusion 1.5",
+    "image": "assets/images/sd15.jpg",
+    "category": "Photorealistic",
+    "tags": [
+      "stable diffusion",
+      "classic",
+      "v1.5"
+    ]
+  },
+  {
+    "id": "dalle3",
+    "name": "DALL\u00b7E 3",
+    "image": "assets/images/dalle3.jpg",
+    "category": "Artistic",
+    "tags": [
+      "openai",
+      "creative",
+      "text"
+    ]
+  },
+  {
+    "id": "dalle2",
+    "name": "DALL\u00b7E 2",
+    "image": "assets/images/dalle2.jpg",
+    "category": "Artistic",
+    "tags": [
+      "openai",
+      "older",
+      "text"
+    ]
+  },
+  {
+    "id": "dreamshaper",
+    "name": "DreamShaper",
+    "image": "assets/images/dreamshaper.jpg",
+    "category": "Artistic",
+    "tags": [
+      "stylized",
+      "fantasy",
+      "vivid"
+    ]
+  },
+  {
+    "id": "realistic",
+    "name": "Realistic Vision",
+    "image": "assets/images/realistic.jpg",
+    "category": "Photorealistic",
+    "tags": [
+      "real",
+      "face",
+      "vision"
+    ]
+  },
+  {
+    "id": "anime",
+    "name": "AnimePastel",
+    "image": "assets/images/anime.jpg",
+    "category": "Anime",
+    "tags": [
+      "cartoon",
+      "anime",
+      "pastel"
+    ]
+  }
+]

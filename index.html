@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DreamFlux</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    .fade-out {
+      opacity: 0;
+      transition: opacity 0.6s ease-out;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0d0d0d;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      transition: filter 1s ease;
+    }
+
+    .overlay {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      animation: popfade 2s ease-in-out forwards;
+    }
+
+    .overlay img {
+      width: 120px;
+      height: auto;
+      animation: pulse 2s infinite;
+    }
+
+    .logo-text {
+      margin-top: 10px;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      opacity: 0.9;
+    }
+
+    .background-blur {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: #0d0d0d;
+      transition: backdrop-filter 1s ease;
+    }
+
+    .blurred {
+      backdrop-filter: blur(10px);
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 5px #fff);
+      }
+      50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 20px #00ffff);
+      }
+    }
+
+    @keyframes popfade {
+      0% {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  
+  .logo-container img:hover {
+    transform: perspective(500px) rotateX(0deg) rotateY(0deg) scale(1.05);
+  }
+</style>
+</head>
+<body>
+  <div class="background-blur" id="blur-layer"></div>
+  <div class="overlay">
+    
+    <div class="logo-wrapper">
+      <div class="circle-loader"></div>
+      <img src="assets/images/DreamFluxHeader.png" alt="DreamFlux Logo" />
+    </div>
+
+    
+    <div class="logo-text">DreamFlux</div>
+    <div id="progress" style="margin-top:10px; font-size:1rem; color:#0ff; opacity:0.8;">Loading... 0%</div>
+
+  </div>
+
+  <audio id="intro-sound" autoplay>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_fcd5a64b1e.mp3?filename=magical-transition-108384.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    setTimeout(() => {
+      document.getElementById("blur-layer").classList.add("blurred");
+    }, 1500);
+    setTimeout(() => {
+      
+    document.body.classList.add("fade-out");
+    setTimeout(() => {
+      window.location.href = "home.html";
+    }, 600);
+
+    }, 3500);
+  
+    let percent = 0;
+    const progressEl = document.getElementById("progress");
+    const interval = setInterval(() => {
+      percent += 2;
+      progressEl.textContent = `Loading... ${percent}%`;
+      if (percent >= 100) {
+        clearInterval(interval);
+        progressEl.textContent = "Done!";
+      }
+    }, 70);  // syncs to roughly 3.5s
+
+</script>
+
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest">
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+
+  @keyframes bounce {
+    from { transform: translate(-50%, -50%) scale(1); }
+    to { transform: translate(-50%, -52%) scale(1.05); }
+  }
+
+  @keyframes fadeInLogo {
+    from { opacity: 0; }
+    to { opacity: 0.1; }
+  }
+</style>
+
+<script>
+  const uname = localStorage.getItem("username");
+  const avatar = localStorage.getItem("avatar");
+  if (uname) document.getElementById("nav-username").textContent = uname;
+  if (avatar) document.getElementById("nav-avatar").src = avatar;
+
+  // Toggle dropdown
+  const userSection = document.getElementById("nav-user");
+  const dropdown = document.getElementById("user-dropdown");
+  userSection.addEventListener("click", () => {
+    
+    const isOpen = dropdown.style.display === "block";
+    dropdown.style.display = isOpen ? "none" : "block";
+    dropdown.style.opacity = isOpen ? "0" : "1";
+
+  });
+
+  // Log out clears profile data
+  function logoutUser() {
+    localStorage.removeItem("username");
+    localStorage.removeItem("avatar");
+    
+    
+    const goodbyeMsg = document.createElement('div');
+    goodbyeMsg.textContent = "Come back soon!";
+    goodbyeMsg.style.position = "fixed";
+    goodbyeMsg.style.top = "50%";
+    goodbyeMsg.style.left = "50%";
+    goodbyeMsg.style.transform = "translate(-50%, -50%)";
+    goodbyeMsg.style.fontSize = "1.5rem";
+    goodbyeMsg.style.fontFamily = "sans-serif";
+    
+    goodbyeMsg.style.color = "#0ff";
+    goodbyeMsg.style.textShadow = "0 0 10px #0ff, 0 0 20px #00f, 0 0 30px #00f";
+    goodbyeMsg.style.animation = "bounce 1s ease-in-out infinite alternate";
+
+    goodbyeMsg.style.zIndex = "9999";
+    
+    const splashImg = document.createElement('img');
+    splashImg.src = "assets/images/DreamFluxHeader.png";
+    splashImg.alt = "DreamFlux Logo";
+    splashImg.style.position = "fixed";
+    splashImg.style.top = "50%";
+    splashImg.style.left = "50%";
+    splashImg.style.transform = "translate(-50%, -50%)";
+    splashImg.style.width = "160px";
+    splashImg.style.opacity = "0.1";
+    splashImg.style.zIndex = "9998";
+    splashImg.style.animation = "fadeInLogo 1s ease forwards";
+
+    document.body.appendChild(splashImg);
+    document.body.appendChild(goodbyeMsg);
+
+    document.body.style.transition = "opacity 0.6s ease-out";
+
+    document.body.style.opacity = "0";
+    setTimeout(() => {
+      window.location.href = "/index.html";
+    }, 600);
+
+  }
+
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+<script>
+  window.addEventListener("DOMContentLoaded", function() {
+    
+    lucide.createIcons();
+
+    // Show saved user avatar and name
+    const uname = localStorage.getItem("username");
+    const avatar = localStorage.getItem("avatar");
+    if (uname) document.getElementById("nav-username").textContent = uname;
+    if (avatar) document.getElementById("nav-avatar").src = avatar;
+
+    const path = window.location.pathname;
+    if (path.includes("create")) document.getElementById("nav-create").classList.add("active");
+    else if (path.includes("profile")) document.getElementById("nav-profile").classList.add("active");
+    else if (path.includes("settings")) document.getElementById("nav-settings").classList.add("active");
+    else document.getElementById("nav-home").classList.add("active");
+  });
+
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+
+</body>
+</html>

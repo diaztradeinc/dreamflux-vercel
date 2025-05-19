@@ -1,0 +1,960 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Processing - DreamFlux</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+<style>
+  .card, .button, .input {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+    margin: 8px 0;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  [data-theme="light"] .card,
+  [data-theme="light"] .button,
+  [data-theme="light"] .input {
+    background: rgba(0, 0, 0, 0.05);
+    color: #111;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .button:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  [data-theme="light"] .button:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+</style>
+
+</head>
+<body>
+  <main class="loading-screen">
+    <p>Processing your AI art...</p>
+    <div class="loader"></div>
+  </main>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+</style>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+</style>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+</style>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest">
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+</style>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest">
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+</style>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest">
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+</style>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest">
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+
+  @keyframes bounce {
+    from { transform: translate(-50%, -50%) scale(1); }
+    to { transform: translate(-50%, -52%) scale(1.05); }
+  }
+</style>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest">
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+
+  @keyframes bounce {
+    from { transform: translate(-50%, -50%) scale(1); }
+    to { transform: translate(-50%, -52%) scale(1.05); }
+  }
+
+  @keyframes fadeInLogo {
+    from { opacity: 0; }
+    to { opacity: 0.1; }
+  }
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Processing - DreamFlux</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+<style>
+  .card, .button, .input {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+    margin: 8px 0;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  [data-theme="light"] .card,
+  [data-theme="light"] .button,
+  [data-theme="light"] .input {
+    background: rgba(0, 0, 0, 0.05);
+    color: #111;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .button:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  [data-theme="light"] .button:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+</style>
+
+</head>
+<body>
+  <main class="loading-screen">
+    <p>Processing your AI art...</p>
+    <div class="loader"></div>
+  </main>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+</style>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+</style>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+</style>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest">
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+</style>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest">
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+</style>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest">
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+</style>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest">
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+
+  @keyframes bounce {
+    from { transform: translate(-50%, -50%) scale(1); }
+    to { transform: translate(-50%, -52%) scale(1.05); }
+  }
+</style>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest">
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+
+  @keyframes bounce {
+    from { transform: translate(-50%, -50%) scale(1); }
+    to { transform: translate(-50%, -52%) scale(1.05); }
+  }
+
+  @keyframes fadeInLogo {
+    from { opacity: 0; }
+    to { opacity: 0.1; }
+  }
+</style>
+
+<!-- Lucide Icon Navigation -->
+<script src="https://unpkg.com/lucide@latest">
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+<style>
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #444;
+    z-index: 999;
+  }
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+  }
+  .bottom-nav a:hover {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  .bottom-nav a.active {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+
+  @keyframes bounce {
+    from { transform: translate(-50%, -50%) scale(1); }
+    to { transform: translate(-50%, -52%) scale(1.05); }
+  }
+
+  @keyframes fadeInLogo {
+    from { opacity: 0; }
+    to { opacity: 0.1; }
+  }
+</style>
+<nav class="bottom-nav">
+  <a href="/" id="nav-home" title="Home"><i data-lucide="home"></i></a>
+  <a href="/create" id="nav-create" title="Create"><i data-lucide="wand-2"></i></a>
+  <a href="/profile" id="nav-profile" title="Profile"><i data-lucide="image"></i></a>
+  <a href="/settings" id="nav-settings" title="Settings"><i data-lucide="settings"></i></a>
+
+  <div id="nav-user" style="position:absolute; right:16px; top:-4px; display:flex; align-items:center; gap:8px;">
+    <span id="nav-username" style="font-size:0.9rem; opacity:0.8;"></span>
+    <img id="nav-avatar" src="assets/images/profile.jpg" alt="Avatar" style="width:30px;height:30px;border-radius:50%;object-fit:cover;" />
+  </div>
+
+  <div id="nav-user" style="position:absolute; right:16px; top:-4px; display:flex; align-items:center; gap:8px; cursor:pointer;">
+    <span id="nav-username" style="font-size:0.9rem; opacity:0.8;"></span>
+    <img id="nav-avatar" src="assets/images/profile.jpg" alt="Avatar" style="width:30px;height:30px;border-radius:50%;object-fit:cover;" />
+    <div id="user-dropdown" style="display:none; position:absolute; bottom:50px; right:0; background:#222; border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,0.5); padding:8px; font-size:0.85rem; z-index:1000;">
+      <a href="/profile" style="display:block; padding:6px 12px; color:white; text-decoration:none;">👤 Profile</a>
+      <a href="/settings" style="display:block; padding:6px 12px; color:white; text-decoration:none;">⚙️ Settings</a>
+      <a href="#" onclick="logoutUser()" style="display:block; padding:6px 12px; color:#f55; text-decoration:none;">🚪 Log Out</a>
+    </div>
+  </div>
+</nav>
+<script>
+  const uname = localStorage.getItem("username");
+  const avatar = localStorage.getItem("avatar");
+  if (uname) document.getElementById("nav-username").textContent = uname;
+  if (avatar) document.getElementById("nav-avatar").src = avatar;
+
+  // Toggle dropdown
+  const userSection = document.getElementById("nav-user");
+  const dropdown = document.getElementById("user-dropdown");
+  userSection.addEventListener("click", () => {
+    
+    const isOpen = dropdown.style.display === "block";
+    dropdown.style.display = isOpen ? "none" : "block";
+    dropdown.style.opacity = isOpen ? "0" : "1";
+
+  });
+
+  // Log out clears profile data
+  function logoutUser() {
+    localStorage.removeItem("username");
+    localStorage.removeItem("avatar");
+    
+    
+    const goodbyeMsg = document.createElement('div');
+    goodbyeMsg.textContent = "Come back soon!";
+    goodbyeMsg.style.position = "fixed";
+    goodbyeMsg.style.top = "50%";
+    goodbyeMsg.style.left = "50%";
+    goodbyeMsg.style.transform = "translate(-50%, -50%)";
+    goodbyeMsg.style.fontSize = "1.5rem";
+    goodbyeMsg.style.fontFamily = "sans-serif";
+    
+    goodbyeMsg.style.color = "#0ff";
+    goodbyeMsg.style.textShadow = "0 0 10px #0ff, 0 0 20px #00f, 0 0 30px #00f";
+    goodbyeMsg.style.animation = "bounce 1s ease-in-out infinite alternate";
+
+    goodbyeMsg.style.zIndex = "9999";
+    
+    const splashImg = document.createElement('img');
+    splashImg.src = "assets/images/DreamFluxHeader.png";
+    splashImg.alt = "DreamFlux Logo";
+    splashImg.style.position = "fixed";
+    splashImg.style.top = "50%";
+    splashImg.style.left = "50%";
+    splashImg.style.transform = "translate(-50%, -50%)";
+    splashImg.style.width = "160px";
+    splashImg.style.opacity = "0.1";
+    splashImg.style.zIndex = "9998";
+    splashImg.style.animation = "fadeInLogo 1s ease forwards";
+
+    document.body.appendChild(splashImg);
+    document.body.appendChild(goodbyeMsg);
+
+    document.body.style.transition = "opacity 0.6s ease-out";
+
+    document.body.style.opacity = "0";
+    setTimeout(() => {
+      window.location.href = "/index.html";
+    }, 600);
+
+  }
+
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>
+<script>
+  window.addEventListener("DOMContentLoaded", function() {
+    
+    lucide.createIcons();
+
+    // Show saved user avatar and name
+    const uname = localStorage.getItem("username");
+    const avatar = localStorage.getItem("avatar");
+    if (uname) document.getElementById("nav-username").textContent = uname;
+    if (avatar) document.getElementById("nav-avatar").src = avatar;
+
+    const path = window.location.pathname;
+    if (path.includes("create")) document.getElementById("nav-create").classList.add("active");
+    else if (path.includes("profile")) document.getElementById("nav-profile").classList.add("active");
+    else if (path.includes("settings")) document.getElementById("nav-settings").classList.add("active");
+    else document.getElementById("nav-home").classList.add("active");
+  });
+
+  // Close dropdown on outside click
+  window.addEventListener("click", (e) => {
+    if (!userSection.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+</script>

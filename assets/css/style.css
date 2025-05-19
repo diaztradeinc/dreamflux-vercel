@@ -1,0 +1,290 @@
+
+body {
+  background-color: #0b0b0b;
+  color: white;
+  font-family: sans-serif;
+}
+.top-bar {
+  text-align: center;
+  padding: 16px;
+  font-size: 1.5em;
+}
+.card {
+  background: #111;
+  margin: 16px;
+  padding: 16px;
+  border-radius: 12px;
+}
+textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #222;
+  color: white;
+}
+button {
+  padding: 14px 24px;
+  background: white;
+  color: black;
+  border-radius: 999px;
+  font-weight: bold;
+  border: none;
+}
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #111;
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0;
+}
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+#model-preview {
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+#model-preview.show {
+  display: flex;
+  opacity: 1;
+  pointer-events: auto;
+}
+#model-preview .preview-inner {
+  transform: scale(0.85);
+  transition: transform 0.3s ease;
+}
+#model-preview.show .preview-inner {
+  transform: scale(1);
+}
+
+/* Masonry fade-in animation */
+.masonry-item {
+  opacity: 0;
+  transform: scale(0.95);
+  animation: fadeInScale 0.5s ease forwards;
+}
+
+@keyframes fadeInScale {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Advanced Options animation */
+details[open] > div {
+  animation: slideDown 0.4s ease;
+}
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Resize thumbnails in model cards */
+.model-card img {
+  height: 100px;
+  width: auto;
+  max-width: 160px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+/* Hover effect and selected model style */
+.model-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.model-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+.model-card.active {
+  border: 2px solid #00f0ff;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+}
+
+.model-card img {
+  height: 100px;
+  width: auto;
+  max-width: 160px;
+  border-radius: 6px;
+  object-fit: cover;
+  object-position: top; /* Crop from top to avoid pollinations.ai watermark */
+}
+
+/* Animated entry and two-row wrap for model cards */
+.model-scroll {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.model-card {
+  animation: fadeSlideIn 0.4s ease both;
+  margin-bottom: 12px;
+  width: calc(50% - 12px);
+  max-width: 160px;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.tag-section {
+  margin-bottom: 20px;
+  background: #1b1b1b;
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
+
+.tag-section summary {
+  font-weight: 600;
+  font-size: 1.1em;
+  cursor: pointer;
+  color: #00f0ff;
+  margin-bottom: 8px;
+}
+
+.model-scroll {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.model-card {
+  width: calc(50% - 12px);
+  max-width: 160px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: fadeSlideIn 0.4s ease both;
+}
+
+.model-card img {
+  height: 100px;
+  width: auto;
+  border-radius: 6px;
+  object-fit: cover;
+  object-position: top;
+}
+
+.model-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+.model-card.active {
+  border: 2px solid #00f0ff;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Remove entry animation and keep only hover effect */
+.model-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  width: 160px;
+}
+
+.model-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+.model-card.active {
+  border: 2px solid #00f0ff;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+}
+
+/* One-row layout (horizontal scroll) */
+.model-scroll {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 12px;
+}
+
+/* Collapsed by default */
+.tag-section {
+  margin-bottom: 20px;
+  background: #1b1b1b;
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
+
+.tag-section[open] > summary {
+  color: #00f0ff;
+}
+
+.tag-section summary {
+  font-weight: 600;
+  font-size: 1.1em;
+  cursor: pointer;
+  user-select: none;
+  color: #aaa;
+}
+
+/* Hover effect for Start Drawing button */
+#generate-button {
+  background-color: #00f0ff;
+  color: #000;
+  border: none;
+  padding: 12px 24px;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#generate-button:hover {
+  background-color: #00c8d6;
+  transform: scale(1.05);
+}
+
+#generate-button {
+  background-color: #00f0ff;
+  color: #000;
+  border: none;
+  padding: 12px 24px;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+#generate-button:hover {
+  background-color: #00c8d6;
+  transform: scale(1.05);
+}

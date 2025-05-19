@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile - DreamFlux</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <header class="top-bar">My Profile</header>
+  <main style="padding: 20px;">
+    <div class="card" style="text-align:center;">
+      <img src="https://via.placeholder.com/100x100.png?text=User" style="width:100px;height:100px;border-radius:50%;border:3px solid var(--accent-glow);" />
+      <h2>Michael Diaz</h2>
+      <p>Joined: May 2025 • 12 Followers</p>
+      <div style="margin-top:10px;">
+        <i data-lucide="edit-3" class="icon"></i>
+        <i data-lucide="share-2" class="icon"></i>
+        <i data-lucide="heart" class="icon"></i>
+      </div>
+    </div>
+
+    <h3 style="margin-top:30px;">Recent Generations</h3>
+    <div class="masonry">
+      <div class="masonry-item">
+        <img src="https://via.placeholder.com/512x768.png?text=Image+1" onclick="openSpotlight(this.src)" />
+        <div class="overlay">Image #1 — DALL·E 3</div>
+      </div>
+      <div class="masonry-item">
+        <img src="https://via.placeholder.com/512x768.png?text=Image+2" onclick="openSpotlight(this.src)" />
+        <div class="overlay">Image #2 — SDXL</div>
+      </div>
+    </div>
+
+    <div id="spotlight" style="display:none;">
+      <img id="spotlight-img" src="" />
+      <div class="actions">
+        <button onclick="closeSpotlight()">Close</button>
+        <button>Save</button>
+        <button>Share</button>
+      </div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="../index.html"><i data-lucide="home" class="icon"></i>Home</a>
+    <a href="create.html"><i data-lucide="sparkles" class="icon"></i>Create</a>
+    <a href="settings.html"><i data-lucide="settings" class="icon"></i>Settings</a>
+    <a href="profile.html"><i data-lucide="user" class="icon"></i>Profile</a>
+  </nav>
+
+  <script>
+    function openSpotlight(src) {
+      document.getElementById("spotlight-img").src = src;
+      document.getElementById("spotlight").style.display = "flex";
+    }
+    function closeSpotlight() {
+      document.getElementById("spotlight").style.display = "none";
+    }
+    lucide.createIcons();
+  </script>
+</body>
+</html>

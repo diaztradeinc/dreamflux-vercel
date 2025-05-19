@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DreamFlux</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0d0d0d;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      transition: filter 1s ease;
+    }
+
+    .logo-container {
+      text-align: center;
+      animation: popfade 2s ease-in-out forwards;
+    }
+
+    .logo-container img {
+      width: 120px;
+      height: auto;
+      animation: pulse 2s infinite;
+    }
+
+    .logo-text {
+      margin-top: 10px;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      opacity: 0.9;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 5px #fff);
+      }
+      50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 20px #00ffff);
+      }
+    }
+
+    @keyframes popfade {
+      0% {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="logo-container">
+    <img src="assets/images/DreamFluxHeader.png" alt="DreamFlux Logo" />
+    <div class="logo-text">DreamFlux</div>
+  </div>
+
+  <audio id="intro-sound" autoplay>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_fcd5a64b1e.mp3?filename=magical-transition-108384.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const sound = document.getElementById("intro-sound");
+    setTimeout(() => {
+      document.body.style.filter = "blur(10px)";
+    }, 1500);
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 2200);
+  </script>
+</body>
+</html>
