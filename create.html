@@ -325,34 +325,90 @@
   }
 </style>
 
-<div id="modelModal" class="model-modal">
-  <div class="model-modal-close" onclick="closeModelModal()">✖</div>
-  <div class="model-grid" id="modelGrid"></div>
-</div>
 
 
 
 <style>
-  .start-button:hover {
-    background: #ffe100;
-    transform: scale(1.03);
-    box-shadow: 0 6px 16px rgba(255,255,0,0.4);
+  .model-picker {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000000e0;
+    z-index: 9999;
+    padding: 2rem;
+    overflow-y: auto;
   }
 
-  .start-button:active {
-    transform: scale(0.97);
-    background: #f2d200;
-    box-shadow: 0 2px 6px rgba(255,255,0,0.2);
+  .model-picker.active {
+    display: block;
+  }
+
+  .model-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1.2rem;
+    max-width: 1200px;
+    margin: auto;
+  }
+
+  .model-tile {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+  }
+
+  .model-tile:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 10px rgba(0,255,255,0.25);
+  }
+
+  .model-tile.selected {
+    border-color: #0ff;
+  }
+
+  .model-tile img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .model-title {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.6);
+    text-align: center;
+    font-weight: bold;
+    color: #0ff;
+    padding: 5px 0;
+    font-family: monospace;
+  }
+
+  .model-picker-close {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 1.5rem;
+    color: #0ff;
+    cursor: pointer;
+    font-weight: bold;
   }
 </style>
 
-
+<div class="model-picker" id="modelPicker">
+  <div class="model-picker-close" onclick="closeModelPicker()">✖</div>
+  <div class="model-picker-grid" id="modelPickerGrid"></div>
+</div>
 
 
 
 
 <script>
   async function startDrawing() {
+    const model = document.getElementById("modelName")?.innerText || "Realistic Vision";
     const prompt = document.querySelector("textarea[placeholder='What do you dream of?']").value;
     const negative_prompt = document.querySelector("textarea[placeholder='What do you want to exclude?']").value;
     const steps = parseInt(document.querySelector("input[type='number'][value='40']")?.value || "40");
@@ -365,8 +421,6 @@
     const high_res = document.querySelector("input[type='checkbox']:nth-of-type(1)")?.checked || false;
     const restore_faces = document.querySelector("input[type='checkbox']:nth-of-type(2)")?.checked || false;
     const control_layer = document.querySelector("input[placeholder='+']")?.value || "";
-
-    const model = document.getElementById("modelName")?.innerText || "Realistic Vision";
 
     const fileInput = document.querySelector("input[type='file']");
     let image = null;
