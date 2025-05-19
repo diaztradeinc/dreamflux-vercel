@@ -1,119 +1,337 @@
-
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Create - DreamFlux</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    #selectedModelBox {
-      display: flex;
-      align-items: center;
-      background: linear-gradient(90deg, #222, #111);
-      border-radius: 12px;
-      padding: 8px 12px;
-      margin-bottom: 1rem;
-      cursor: pointer;
-      border: 2px solid #444;
-      box-shadow: 0 0 6px rgba(0,255,255,0.2);
-    }
+  <link rel="stylesheet" href="style.css">
+</head><body>
 
-    #selectedModelBox:hover {
-      border-color: #0ff;
-    }
+<nav class="bottom-nav">
+  <a href="index.html"><i class="icon-home"></i></a>
+  <a href="create.html" class="active"><i class="icon-grid"></i></a>
+  <a href="#"><i class="icon-brush"></i></a>
+  <a href="settings.html"><i class="icon-settings"></i></a>
+  <a href="profile.html"><i class="icon-user"></i></a>
+</nav>
 
-    #selectedModelBox img {
-      width: 50px;
-      height: 50px;
-      border-radius: 8px;
-      object-fit: cover;
-      margin-right: 12px;
-      border: 1px solid #555;
-    }
-
-    #modelName {
-      font-size: 1rem;
-      font-weight: bold;
-      color: #fff;
-    }
-
-    .model-picker {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: #000d;
-      z-index: 9999;
-      overflow-y: auto;
-      padding: 2rem;
-    }
-
-    .model-picker.active {
-      display: block;
-    }
-
-    .model-picker-close {
-      position: absolute;
-      top: 16px;
-      right: 24px;
-      font-size: 1.5rem;
-      color: #0ff;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .model-picker-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 1rem;
-      max-width: 1200px;
-      margin: auto;
-      padding-top: 60px;
-    }
-
-    .model-grid-item {
-      border-radius: 10px;
-      overflow: hidden;
-      border: 2px solid transparent;
-      background: #111;
-      transition: all 0.25s ease;
-      cursor: pointer;
-      position: relative;
-    }
-
-    .model-grid-item:hover {
-      transform: scale(1.03);
-      border-color: #0ff;
-      box-shadow: 0 0 12px rgba(0,255,255,0.2);
-    }
-
-    .model-grid-item img {
-      width: 100%;
-      display: block;
-    }
-
-    .model-grid-item .model-title {
-      position: absolute;
-      bottom: 28px;
-      width: 100%;
-      text-align: center;
-      color: #fff;
-      font-weight: bold;
-      background: rgba(0,0,0,0.6);
-      padding: 4px 0;
-      font-size: 0.9rem;
-    }
-  </style>
-</head>
-<body style="background:#000;color:#fff;font-family:sans-serif;padding:1rem">
-
-<h2>Select a Model</h2>
-<div id="selectedModelBox">
-  <img id="modelThumb" src="https://modelfiles.ai-models.org/realistic/realistic-vision-v51-thumb.jpg" />
-  <div id="modelName">Realistic Vision</div>
+<div class="model-select-bar" id="modelBar">
+  <button onclick="selectModelTab('sd15')" class="selected">SD1.5</button>
+  <button onclick="selectModelTab('sdxl')">SDXL</button>
+  <button onclick="selectModelTab('flux')">Flux</button>
+  <button onclick="selectModelTab('sd35')">SD3.5</button>
 </div>
 
-<!-- Model Picker Modal -->
+<style>
+  .tool-section {
+    padding: 1rem;
+    color: #fff;
+  }
+
+  .toggle-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toggle-bar button {
+    flex: 1;
+    padding: 0.75rem;
+    font-weight: bold;
+    border-radius: 10px;
+    border: none;
+    background: #222;
+    color: #ccc;
+    transition: background 0.2s ease;
+  }
+
+  .toggle-bar button.active {
+    background: #FFD600;
+    color: black;
+  }
+
+  .canvas-mode {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to right, #CFFFC8, #F9EBD5);
+    color: black;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-block {
+    margin-bottom: 1.25rem;
+  }
+
+  .form-block label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+    color: #aaa;
+  }
+
+  .form-block input,
+  .form-block textarea,
+  .form-block select {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 10px;
+    border: none;
+    background: #1c1c1c;
+    color: #eee;
+    font-size: 0.95rem;
+  }
+
+  .mode-tabs {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+
+  .mode-tabs button {
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: #222;
+    color: #aaa;
+    border: none;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+
+  .mode-tabs button.active {
+    background: #FFD600;
+    color: black;
+  }
+
+  .start-button {
+    width: 100%;
+    padding: 1rem;
+    background: #FFD600;
+    color: black;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    box-shadow: 0 4px 8px rgba(255,255,0,0.3);
+  }
+
+  .advanced-options {
+    margin-top: 1.5rem;
+    display: none;
+  }
+
+  .advanced-options.open {
+    display: block;
+  }
+
+  .advanced-toggle {
+    text-align: center;
+    color: #0ff;
+    margin-top: 1rem;
+    cursor: pointer;
+  }
+
+</style>
+
+<div id="sd15" class="model-section active tool-section">
+  <div class="toggle-bar">
+    <button class="active">Image</button>
+    <button>Video</button>
+  </div>
+
+  <div class="canvas-mode">
+    <span>Canvas mode</span>
+    <a href="#" style="color: black; font-size: 0.85rem;">Tutorial</a>
+  </div>
+
+  <div class="form-block">
+    <label>Model</label>
+    <input type="text" placeholder="Realistic Vision" disabled />
+  </div>
+
+  <div class="form-block">
+    <label>Prompt</label>
+    <textarea placeholder="What do you dream of?"></textarea>
+  </div>
+
+  <div class="form-block">
+    <label>Styles</label>
+    <input type="text" placeholder="Choose your styles" />
+  </div>
+
+  <div class="form-block">
+    <label>Negative Prompt</label>
+    <textarea placeholder="What do you want to exclude?"></textarea>
+  </div>
+
+  <div class="form-block">
+    <label>Negative Embeddings</label>
+    <input type="text" placeholder="2 selected" disabled />
+  </div>
+
+  <div class="form-block">
+    <label>Aspect Ratio</label>
+    <select>
+      <option>9:16</option>
+      <option>1:1</option>
+      <option>4:3</option>
+    </select>
+  </div>
+
+  <label style="font-size: 0.9rem; color: #bbb;">Mode</label>
+  <div class="mode-tabs">
+    <button class="active">Text to Image</button>
+    <button>Image to Image</button>
+    <button>Inpaint</button>
+    <button>Outpaint</button>
+    <button>Sketch</button>
+  </div>
+
+  <div class="form-block">
+    <label>Control Layer</label>
+    <input type="text" placeholder="+" />
+  </div>
+
+  <div class="form-block">
+    <label>1.5x High-Res</label>
+    <input type="checkbox" checked />
+  </div>
+
+  <div class="form-block">
+    <label>Image Prompt</label>
+    <input type="file" />
+  </div>
+
+  <div class="form-block">
+    <label>Restore Faces</label>
+    <input type="checkbox" checked />
+  </div>
+
+  <div class="form-block">
+    <label>Seed</label>
+    <input type="text" placeholder="Random" />
+  </div>
+
+  <div class="form-block">
+    <label>Save to</label>
+    <input type="text" placeholder="None" />
+  </div>
+
+  <div class="advanced-toggle" onclick="toggleAdvancedOptions()">Advanced Options</div>
+  <div class="advanced-options" id="advOptions">
+    <div class="form-block">
+      <label>Sampling Steps</label>
+      <input type="number" value="40" />
+    </div>
+    <div class="form-block">
+      <label>Sampling Method</label>
+      <input type="text" value="Euler A" />
+    </div>
+    <div class="form-block">
+      <label>Guidance Scale</label>
+      <input type="number" value="5.0" step="0.1" />
+    </div>
+    <div class="form-block">
+      <label>CLIP Skip</label>
+      <input type="number" value="1" />
+    </div>
+    <div class="form-block">
+      <label>VAE</label>
+      <input type="text" value="blessed" />
+    </div>
+    <div class="form-block">
+      <label>Quality Boost</label>
+      <input type="checkbox" checked />
+    </div>
+  </div>
+
+  <button class="start-button">Start Drawing</button>
+</div>
+
+<script>
+  function toggleAdvancedOptions() {
+    document.getElementById("advOptions").classList.toggle("open");
+  }
+</script>
+
+<!-- MODEL MODAL -->
+<style>
+  .model-picker {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000d;
+    z-index: 9999;
+    overflow-y: auto;
+    padding: 2rem;
+  }
+
+  .model-picker.active {
+    display: block;
+  }
+
+  .model-picker-close {
+    position: absolute;
+    top: 16px;
+    right: 24px;
+    font-size: 1.5rem;
+    color: #0ff;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .model-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+    max-width: 1200px;
+    margin: auto;
+    padding-top: 60px;
+  }
+
+  .model-grid-item {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    background: #111;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .model-grid-item:hover {
+    transform: scale(1.03);
+    border-color: #0ff;
+    box-shadow: 0 0 12px rgba(0,255,255,0.2);
+  }
+
+  .model-grid-item.selected {
+    border-color: #0ff;
+  }
+
+  .model-grid-item img {
+    width: 100%;
+    display: block;
+  }
+
+  .model-grid-item .model-title {
+    position: absolute;
+    bottom: 28px;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    background: rgba(0,0,0,0.6);
+    padding: 4px 0;
+    font-size: 0.9rem;
+  }
+
+</style>
+
 <div class="model-picker" id="modelPicker">
   <div class="model-picker-close" onclick="closeModelPicker()">✖</div>
   <div class="model-picker-grid" id="modelPickerGrid"></div>
@@ -129,7 +347,16 @@
     { name: "Absolute Reality", thumb: "https://modelfiles.ai-models.org/realistic/absolute-reality-thumb.jpg" },
     { name: "CyberRealistic", thumb: "https://modelfiles.ai-models.org/realistic/cyberrealistic-thumb.jpg" },
     { name: "A-Zovya Photoreal", thumb: "https://modelfiles.ai-models.org/realistic/a-zovya-photoreal-thumb.jpg" },
-    { name: "majicMIX realistic", thumb: "https://modelfiles.ai-models.org/realistic/majicmix-thumb.jpg" }
+    { name: "majicMIX realistic", thumb: "https://modelfiles.ai-models.org/realistic/majicmix-thumb.jpg" },
+    { name: "Anything V3", thumb: "https://modelfiles.ai-models.org/anime/anything-v3-thumb.jpg" },
+    { name: "Counterfeit", thumb: "https://modelfiles.ai-models.org/anime/counterfeit-thumb.jpg" },
+    { name: "PastelMix", thumb: "https://modelfiles.ai-models.org/anime/pastelmix-thumb.jpg" },
+    { name: "ReV Animated", thumb: "https://modelfiles.ai-models.org/realistic/rev-animated-thumb.jpg" },
+    { name: "Analog Madness", thumb: "https://modelfiles.ai-models.org/realistic/analog-madness-thumb.jpg" },
+    { name: "Protogen", thumb: "https://modelfiles.ai-models.org/realistic/protogen-thumb.jpg" },
+    { name: "MeinaMix", thumb: "https://modelfiles.ai-models.org/anime/meinamix-thumb.jpg" },
+    { name: "ChilloutMix", thumb: "https://modelfiles.ai-models.org/realistic/chilloutmix-thumb.jpg" },
+    { name: "AbyssOrangeMix3 (AOM3)", thumb: "https://modelfiles.ai-models.org/anime/abyssorangemix3-thumb.jpg" }
   ];
 
   function openModelPicker() {
@@ -138,18 +365,17 @@
     freshModels.forEach(model => {
       const div = document.createElement("div");
       div.className = "model-grid-item";
-      div.innerHTML = \`
-        <img src="\${model.thumb}" alt="\${model.name}" />
-        <div class="model-title">\${model.name}</div>
-      \`;
+      div.innerHTML = `<img src="${model.thumb}" alt="${model.name}" />
+        <div class="model-title">${model.name}</div>`;
       div.onclick = () => {
         document.getElementById("modelName").innerText = model.name;
         document.getElementById("modelThumb").src = model.thumb;
+        localStorage.setItem("selectedModel", model.name);
+        localStorage.setItem("selectedImage", model.thumb);
         closeModelPicker();
       };
       grid.appendChild(div);
     });
-
     document.getElementById("modelPicker").classList.add("active");
   }
 
@@ -158,8 +384,103 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("selectedModelBox").addEventListener("click", openModelPicker);
+    const selector = document.getElementById("selectedModelBox");
+    if (selector) {
+      selector.addEventListener("click", openModelPicker);
+    }
   });
 </script>
-</body>
-</html>
+
+<script>
+  async function startDrawing() {
+    const model = document.getElementById("modelName")?.innerText || "Realistic Vision";
+    const prompt = document.querySelector("textarea[placeholder='What do you dream of?']").value;
+    const negative_prompt = document.querySelector("textarea[placeholder='What do you want to exclude?']").value;
+    const steps = parseInt(document.querySelector("input[type='number'][value='40']")?.value || "40");
+    const sampler = document.querySelector("input[value='Euler A']")?.value || "Euler A";
+    const cfg = parseFloat(document.querySelector("input[value='5.0']")?.value || "5.0");
+    const seed = document.querySelector("input[placeholder='Random']")?.value || null;
+    const clip_skip = parseInt(document.querySelector("input[value='1']")?.value || "1");
+    const vae = document.querySelector("input[value='blessed']")?.value || "blessed";
+    const quality_boost = document.querySelector("input[type='checkbox']:nth-of-type(1)")?.checked || false;
+    const high_res = document.querySelector("input[type='checkbox']:nth-of-type(1)")?.checked || false;
+    const restore_faces = document.querySelector("input[type='checkbox']:nth-of-type(2)")?.checked || false;
+    const control_layer = document.querySelector("input[placeholder='+']")?.value || "";
+
+    const fileInput = document.querySelector("input[type='file']");
+    let image = null;
+
+    const sendPayload = async (imgBase64 = null) => {
+      const body = {
+        model,
+        prompt,
+        negative_prompt,
+        steps,
+        sampler,
+        cfg,
+        seed,
+        clip_skip,
+        vae,
+        quality_boost,
+        high_res,
+        restore_faces,
+        control_layer,
+        image: imgBase64
+      };
+
+      const btn = document.querySelector(".start-button");
+      btn.disabled = true;
+      btn.innerText = "Generating...";
+
+      try {
+        const res = await fetch("/api/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+
+        const data = await res.json();
+        if (data && data.image_url) {
+          window.location.href = '/viewer.html?url=' + encodeURIComponent(data.image_url);
+        } else {
+          alert("No image returned.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error generating image.");
+      }
+
+      btn.disabled = false;
+      btn.innerText = "Start Drawing";
+    };
+
+    if (fileInput && fileInput.files.length > 0) {
+      const reader = new FileReader();
+      reader.onloadend = function () {
+        const base64 = reader.result.split(',')[1];
+        sendPayload(base64);
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    } else {
+      sendPayload(null);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.querySelector(".start-button");
+    if (btn) btn.addEventListener("click", startDrawing);
+  });
+</script>
+
+<script>
+  function selectModelTab(tabId) {
+    document.querySelectorAll(".model-section").forEach(s => s.classList.remove("active"));
+    document.querySelectorAll(".model-select-bar button").forEach(b => b.classList.remove("selected"));
+    const section = document.getElementById(tabId);
+    const button = [...document.querySelectorAll(".model-select-bar button")].find(b => b.textContent.replace(/\s+/g, '').toLowerCase() === tabId);
+    if (section) section.classList.add("active");
+    if (button) button.classList.add("selected");
+  }
+</script>
+
+</body></html>
