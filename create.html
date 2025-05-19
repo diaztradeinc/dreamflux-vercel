@@ -1,547 +1,119 @@
+
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Create - DreamFlux</title>
-  <link rel="stylesheet" href="style.css">
-</head><body>
-
-<nav class="bottom-nav">
-  <a href="index.html"><i class="icon-home"></i></a>
-  <a href="create.html" class="active"><i class="icon-grid"></i></a>
-  <a href="#"><i class="icon-brush"></i></a>
-  <a href="settings.html"><i class="icon-settings"></i></a>
-  <a href="profile.html"><i class="icon-user"></i></a>
-</nav>
-
-<div class="model-select-bar" id="modelBar">
-  <button onclick="selectModelTab('sd15')" class="selected">SD1.5</button>
-  <button onclick="selectModelTab('sdxl')">SDXL</button>
-  <button onclick="selectModelTab('flux')">Flux</button>
-  <button onclick="selectModelTab('sd35')">SD3.5</button>
-</div>
-
-<style>
-  .tool-section {
-    padding: 1rem;
-    color: #fff;
-  }
-
-  .toggle-bar {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .toggle-bar button {
-    flex: 1;
-    padding: 0.75rem;
-    font-weight: bold;
-    border-radius: 10px;
-    border: none;
-    background: #222;
-    color: #ccc;
-    transition: background 0.2s ease;
-  }
-
-  .toggle-bar button.active {
-    background: #FFD600;
-    color: black;
-  }
-
-  .canvas-mode {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: linear-gradient(to right, #CFFFC8, #F9EBD5);
-    color: black;
-    padding: 12px 18px;
-    border-radius: 12px;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-  }
-
-  .form-block {
-    margin-bottom: 1.25rem;
-  }
-
-  .form-block label {
-    display: block;
-    font-size: 0.9rem;
-    margin-bottom: 0.4rem;
-    color: #aaa;
-  }
-
-  .form-block input,
-  .form-block textarea,
-  .form-block select {
-    width: 100%;
-    padding: 0.75rem;
-    border-radius: 10px;
-    border: none;
-    background: #1c1c1c;
-    color: #eee;
-    font-size: 0.95rem;
-  }
-
-  .mode-tabs {
-    display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    margin: 1rem 0;
-  }
-
-  .mode-tabs button {
-    padding: 10px 16px;
-    border-radius: 8px;
-    background: #222;
-    color: #aaa;
-    border: none;
-    font-weight: bold;
-    flex-shrink: 0;
-  }
-
-  .mode-tabs button.active {
-    background: #FFD600;
-    color: black;
-  }
-
-  .start-button {
-    width: 100%;
-    padding: 1rem;
-    background: #FFD600;
-    color: black;
-    border: none;
-    border-radius: 12px;
-    font-weight: bold;
-    font-size: 1.1rem;
-    margin-top: 2rem;
-    box-shadow: 0 4px 8px rgba(255,255,0,0.3);
-  }
-
-  .advanced-options {
-    margin-top: 1.5rem;
-    display: none;
-  }
-
-  .advanced-options.open {
-    display: block;
-  }
-
-  .advanced-toggle {
-    text-align: center;
-    color: #0ff;
-    margin-top: 1rem;
-    cursor: pointer;
-  }
-
-</style>
-
-<div id="sd15" class="model-section active tool-section">
-  <div class="toggle-bar">
-    <button class="active">Image</button>
-    <button>Video</button>
-  </div>
-
-  <div class="canvas-mode">
-    <span>Canvas mode</span>
-    <a href="#" style="color: black; font-size: 0.85rem;">Tutorial</a>
-  </div>
-
-  <div class="form-block">
-    <label>Model</label>
-    <input type="text" placeholder="Realistic Vision" disabled />
-  </div>
-
-  <div class="form-block">
-    <label>Prompt</label>
-    <textarea placeholder="What do you dream of?"></textarea>
-  </div>
-
-  <div class="form-block">
-    <label>Styles</label>
-    <input type="text" placeholder="Choose your styles" />
-  </div>
-
-  <div class="form-block">
-    <label>Negative Prompt</label>
-    <textarea placeholder="What do you want to exclude?"></textarea>
-  </div>
-
-  <div class="form-block">
-    <label>Negative Embeddings</label>
-    <input type="text" placeholder="2 selected" disabled />
-  </div>
-
-  <div class="form-block">
-    <label>Aspect Ratio</label>
-    <select>
-      <option>9:16</option>
-      <option>1:1</option>
-      <option>4:3</option>
-    </select>
-  </div>
-
-  <label style="font-size: 0.9rem; color: #bbb;">Mode</label>
-  <div class="mode-tabs">
-    <button class="active">Text to Image</button>
-    <button>Image to Image</button>
-    <button>Inpaint</button>
-    <button>Outpaint</button>
-    <button>Sketch</button>
-  </div>
-
-  <div class="form-block">
-    <label>Control Layer</label>
-    <input type="text" placeholder="+" />
-  </div>
-
-  <div class="form-block">
-    <label>1.5x High-Res</label>
-    <input type="checkbox" checked />
-  </div>
-
-  <div class="form-block">
-    <label>Image Prompt</label>
-    <input type="file" />
-  </div>
-
-  <div class="form-block">
-    <label>Restore Faces</label>
-    <input type="checkbox" checked />
-  </div>
-
-  <div class="form-block">
-    <label>Seed</label>
-    <input type="text" placeholder="Random" />
-  </div>
-
-  <div class="form-block">
-    <label>Save to</label>
-    <input type="text" placeholder="None" />
-  </div>
-
-  <div class="advanced-toggle" onclick="toggleAdvancedOptions()">Advanced Options</div>
-  <div class="advanced-options" id="advOptions">
-    <div class="form-block">
-      <label>Sampling Steps</label>
-      <input type="number" value="40" />
-    </div>
-    <div class="form-block">
-      <label>Sampling Method</label>
-      <input type="text" value="Euler A" />
-    </div>
-    <div class="form-block">
-      <label>Guidance Scale</label>
-      <input type="number" value="5.0" step="0.1" />
-    </div>
-    <div class="form-block">
-      <label>CLIP Skip</label>
-      <input type="number" value="1" />
-    </div>
-    <div class="form-block">
-      <label>VAE</label>
-      <input type="text" value="blessed" />
-    </div>
-    <div class="form-block">
-      <label>Quality Boost</label>
-      <input type="checkbox" checked />
-    </div>
-  </div>
-
-  <button class="start-button">Start Drawing</button>
-</div>
-
-
-
-<style>
-  .model-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.9);
-    z-index: 9999;
-    overflow-y: auto;
-    padding: 2rem;
-  }
-
-  .model-modal.active {
-    display: block;
-  }
-
-  .model-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 1rem;
-    max-width: 1200px;
-    margin: auto;
-  }
-
-  .model-card {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 2px solid transparent;
-  }
-
-  .model-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 12px rgba(0,255,255,0.2);
-  }
-
-  .model-card.selected {
-    border: 2px solid #0ff;
-  }
-
-  .model-card img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  .model-label {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background: rgba(0,0,0,0.6);
-    color: #0ff;
-    text-align: center;
-    font-weight: bold;
-    padding: 6px 0;
-    font-family: 'Courier New', monospace;
-    font-size: 0.9rem;
-  }
-
-  .model-modal-close {
-    color: #0ff;
-    font-size: 1.5rem;
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-</style>
-
-
-
-
-<style>
-  .model-picker {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: #000000e0;
-    z-index: 9999;
-    padding: 2rem;
-    overflow-y: auto;
-  }
-
-  .model-picker.active {
-    display: block;
-  }
-
-  .model-picker-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 1.2rem;
-    max-width: 1200px;
-    margin: auto;
-  }
-
-  .model-tile {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
-    border: 2px solid transparent;
-  }
-
-  .model-tile:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 10px rgba(0,255,255,0.25);
-  }
-
-  .model-tile.selected {
-    border-color: #0ff;
-  }
-
-  .model-tile img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  .model-title {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background: rgba(0,0,0,0.6);
-    text-align: center;
-    font-weight: bold;
-    color: #0ff;
-    padding: 5px 0;
-    font-family: monospace;
-  }
-
-  .model-picker-close {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 1.5rem;
-    color: #0ff;
-    cursor: pointer;
-    font-weight: bold;
-  }
-</style>
-
-
-
-
-<script>
-  const freshModels = [
-  { name: "DreamShaper", thumb: "https://modelfiles.ai-models.org/realistic/dreamshaper-v8-thumb.jpg" },
-  { name: "Deliberate", thumb: "https://modelfiles.ai-models.org/realistic/deliberate-v3-thumb.jpg" },
-  { name: "Juggernaut", thumb: "https://modelfiles.ai-models.org/realistic/juggernaut-v7-thumb.jpg" },
-  { name: "Realistic Vision", thumb: "https://modelfiles.ai-models.org/realistic/realistic-vision-v51-thumb.jpg" },
-  { name: "EpicRealism", thumb: "https://modelfiles.ai-models.org/realistic/epicrealism-thumb.jpg" },
-  { name: "Absolute Reality", thumb: "https://modelfiles.ai-models.org/realistic/absolute-reality-thumb.jpg" },
-  { name: "CyberRealistic", thumb: "https://modelfiles.ai-models.org/realistic/cyberrealistic-thumb.jpg" },
-  { name: "A-Zovya Photoreal", thumb: "https://modelfiles.ai-models.org/realistic/a-zovya-photoreal-thumb.jpg" },
-  { name: "majicMIX realistic", thumb: "https://modelfiles.ai-models.org/realistic/majicmix-thumb.jpg" },
-  { name: "Anything V3", thumb: "https://modelfiles.ai-models.org/anime/anything-v3-thumb.jpg" },
-  { name: "Counterfeit", thumb: "https://modelfiles.ai-models.org/anime/counterfeit-thumb.jpg" },
-  { name: "PastelMix", thumb: "https://modelfiles.ai-models.org/anime/pastelmix-thumb.jpg" },
-  { name: "ReV Animated", thumb: "https://modelfiles.ai-models.org/realistic/rev-animated-thumb.jpg" },
-  { name: "Analog Madness", thumb: "https://modelfiles.ai-models.org/realistic/analog-madness-thumb.jpg" },
-  { name: "Protogen", thumb: "https://modelfiles.ai-models.org/realistic/protogen-thumb.jpg" },
-  { name: "MeinaMix", thumb: "https://modelfiles.ai-models.org/anime/meinamix-thumb.jpg" },
-  { name: "ChilloutMix", thumb: "https://modelfiles.ai-models.org/realistic/chilloutmix-thumb.jpg" },
-  { name: "AbyssOrangeMix3 (AOM3)", thumb: "https://modelfiles.ai-models.org/anime/abyssorangemix3-thumb.jpg" }
-];
-
-  function showModelPicker() {
-    const grid = document.getElementById("modelPickerGrid");
-    grid.innerHTML = "";
-    freshModels.forEach(model => {
-      const tile = document.createElement("div");
-      tile.className = "model-tile";
-      tile.innerHTML = `
-        <img src="${model.thumb}" alt="${model.name}" />
-        <div class="model-title">${model.name}</div>
-      `;
-      tile.onclick = () => {
-        document.getElementById("modelName").innerText = model.name;
-        document.getElementById("modelThumb").src = model.thumb;
-        localStorage.setItem("selectedModel", model.name);
-        localStorage.setItem("selectedImage", model.thumb);
-        closeModelPicker();
-      };
-      grid.appendChild(tile);
-    });
-
-    highlightModelTile();
-    document.getElementById("modelPicker").classList.add("active");
-  }
-
-  function closeModelPicker() {
-    document.getElementById("modelPicker").classList.remove("active");
-  }
-
-  function highlightModelTile() {
-    const allTiles = document.querySelectorAll(".model-tile");
-    const selected = document.getElementById("modelName").innerText;
-    allTiles.forEach(tile => {
-      tile.classList.toggle("selected", tile.querySelector(".model-title").innerText === selected);
-    });
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const trigger = document.getElementById("selectedModelBox");
-    if (trigger) {
-      trigger.addEventListener("click", showModelPicker);
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    #selectedModelBox {
+      display: flex;
+      align-items: center;
+      background: linear-gradient(90deg, #222, #111);
+      border-radius: 12px;
+      padding: 8px 12px;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      border: 2px solid #444;
+      box-shadow: 0 0 6px rgba(0,255,255,0.2);
     }
-  });
-</script>
 
+    #selectedModelBox:hover {
+      border-color: #0ff;
+    }
 
-<!-- MODEL MODAL -->
-<style>
-  .model-picker {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: #000d;
-    z-index: 9999;
-    overflow-y: auto;
-    padding: 2rem;
-  }
+    #selectedModelBox img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin-right: 12px;
+      border: 1px solid #555;
+    }
 
-  .model-picker.active {
-    display: block;
-  }
+    #modelName {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #fff;
+    }
 
-  .model-picker-close {
-    position: absolute;
-    top: 16px;
-    right: 24px;
-    font-size: 1.5rem;
-    color: #0ff;
-    font-weight: bold;
-    cursor: pointer;
-  }
+    .model-picker {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #000d;
+      z-index: 9999;
+      overflow-y: auto;
+      padding: 2rem;
+    }
 
-  .model-picker-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 1rem;
-    max-width: 1200px;
-    margin: auto;
-    padding-top: 60px;
-  }
+    .model-picker.active {
+      display: block;
+    }
 
-  .model-grid-item {
-    border-radius: 10px;
-    overflow: hidden;
-    border: 2px solid transparent;
-    background: #111;
-    transition: all 0.25s ease;
-    cursor: pointer;
-    position: relative;
-  }
+    .model-picker-close {
+      position: absolute;
+      top: 16px;
+      right: 24px;
+      font-size: 1.5rem;
+      color: #0ff;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-  .model-grid-item:hover {
-    transform: scale(1.03);
-    border-color: #0ff;
-    box-shadow: 0 0 12px rgba(0,255,255,0.2);
-  }
+    .model-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+      max-width: 1200px;
+      margin: auto;
+      padding-top: 60px;
+    }
 
-  .model-grid-item.selected {
-    border-color: #0ff;
-  }
+    .model-grid-item {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      background: #111;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      position: relative;
+    }
 
-  .model-grid-item img {
-    width: 100%;
-    display: block;
-  }
+    .model-grid-item:hover {
+      transform: scale(1.03);
+      border-color: #0ff;
+      box-shadow: 0 0 12px rgba(0,255,255,0.2);
+    }
 
-  .model-grid-item .model-title {
-    position: absolute;
-    bottom: 28px;
-    width: 100%;
-    text-align: center;
-    color: #fff;
-    font-weight: bold;
-    background: rgba(0,0,0,0.6);
-    padding: 4px 0;
-    font-size: 0.9rem;
-  }
+    .model-grid-item img {
+      width: 100%;
+      display: block;
+    }
 
-</style>
+    .model-grid-item .model-title {
+      position: absolute;
+      bottom: 28px;
+      width: 100%;
+      text-align: center;
+      color: #fff;
+      font-weight: bold;
+      background: rgba(0,0,0,0.6);
+      padding: 4px 0;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body style="background:#000;color:#fff;font-family:sans-serif;padding:1rem">
 
+<h2>Select a Model</h2>
+<div id="selectedModelBox">
+  <img id="modelThumb" src="https://modelfiles.ai-models.org/realistic/realistic-vision-v51-thumb.jpg" />
+  <div id="modelName">Realistic Vision</div>
+</div>
+
+<!-- Model Picker Modal -->
 <div class="model-picker" id="modelPicker">
   <div class="model-picker-close" onclick="closeModelPicker()">✖</div>
   <div class="model-picker-grid" id="modelPickerGrid"></div>
@@ -557,16 +129,7 @@
     { name: "Absolute Reality", thumb: "https://modelfiles.ai-models.org/realistic/absolute-reality-thumb.jpg" },
     { name: "CyberRealistic", thumb: "https://modelfiles.ai-models.org/realistic/cyberrealistic-thumb.jpg" },
     { name: "A-Zovya Photoreal", thumb: "https://modelfiles.ai-models.org/realistic/a-zovya-photoreal-thumb.jpg" },
-    { name: "majicMIX realistic", thumb: "https://modelfiles.ai-models.org/realistic/majicmix-thumb.jpg" },
-    { name: "Anything V3", thumb: "https://modelfiles.ai-models.org/anime/anything-v3-thumb.jpg" },
-    { name: "Counterfeit", thumb: "https://modelfiles.ai-models.org/anime/counterfeit-thumb.jpg" },
-    { name: "PastelMix", thumb: "https://modelfiles.ai-models.org/anime/pastelmix-thumb.jpg" },
-    { name: "ReV Animated", thumb: "https://modelfiles.ai-models.org/realistic/rev-animated-thumb.jpg" },
-    { name: "Analog Madness", thumb: "https://modelfiles.ai-models.org/realistic/analog-madness-thumb.jpg" },
-    { name: "Protogen", thumb: "https://modelfiles.ai-models.org/realistic/protogen-thumb.jpg" },
-    { name: "MeinaMix", thumb: "https://modelfiles.ai-models.org/anime/meinamix-thumb.jpg" },
-    { name: "ChilloutMix", thumb: "https://modelfiles.ai-models.org/realistic/chilloutmix-thumb.jpg" },
-    { name: "AbyssOrangeMix3 (AOM3)", thumb: "https://modelfiles.ai-models.org/anime/abyssorangemix3-thumb.jpg" }
+    { name: "majicMIX realistic", thumb: "https://modelfiles.ai-models.org/realistic/majicmix-thumb.jpg" }
   ];
 
   function openModelPicker() {
@@ -575,17 +138,18 @@
     freshModels.forEach(model => {
       const div = document.createElement("div");
       div.className = "model-grid-item";
-      div.innerHTML = `<img src="${model.thumb}" alt="${model.name}" />
-        <div class="model-title">${model.name}</div>`;
+      div.innerHTML = \`
+        <img src="\${model.thumb}" alt="\${model.name}" />
+        <div class="model-title">\${model.name}</div>
+      \`;
       div.onclick = () => {
         document.getElementById("modelName").innerText = model.name;
         document.getElementById("modelThumb").src = model.thumb;
-        localStorage.setItem("selectedModel", model.name);
-        localStorage.setItem("selectedImage", model.thumb);
         closeModelPicker();
       };
       grid.appendChild(div);
     });
+
     document.getElementById("modelPicker").classList.add("active");
   }
 
@@ -594,11 +158,8 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    const selector = document.getElementById("selectedModelBox");
-    if (selector) {
-      selector.addEventListener("click", openModelPicker);
-    }
+    document.getElementById("selectedModelBox").addEventListener("click", openModelPicker);
   });
 </script>
-
-</body></html>
+</body>
+</html>
